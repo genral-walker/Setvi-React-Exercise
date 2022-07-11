@@ -1,10 +1,12 @@
 import { Button, Toolbar, Typography } from '@mui/material';
 import { ROUTES } from 'constants/routes';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NavbarWrapper } from './styles';
 
 export const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <NavbarWrapper position="static">
       <Toolbar>
@@ -12,7 +14,7 @@ export const Navbar = () => {
           <Link to={ROUTES.HOME}>Posts App</Link>
         </Typography>
         {location.pathname === ROUTES.HOME ? (
-          <Button variant="outlined">Create Post</Button>
+          <Button variant="outlined" onClick={()=> navigate(ROUTES.CREATE)}>Create Post</Button>
         ) : ''}
       </Toolbar>
     </NavbarWrapper>
