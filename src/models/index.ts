@@ -6,8 +6,9 @@ export interface PostProps {
 
 export interface FormProps {
   formType: 'update' | 'create';
-  // body: string;
-  // clickFunc: () => void;
+  onClickFunc: () => void;
+  title?: string;
+  body?: string;
 }
 
 export interface PostType {

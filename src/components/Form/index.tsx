@@ -1,22 +1,32 @@
-import {
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  Button,
-  IconButton,
-  Stack,
-} from '@mui/material';
-import React from 'react';
+import { Card, CardContent, Typography, TextField, Stack } from '@mui/material';
+import React, { useState } from 'react';
 import { FormWrapper } from './styles';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { FormProps } from 'models';
 import { LoadingButton } from '@mui/lab';
 
-export const Form = (props: FormProps) => {
-  const { formType } = props;
-  const submit = (evt: React.FormEvent<HTMLFormElement>) => {};
+export const Form = ({ formType, onClickFunc }: FormProps) => {
+
+  const [inputTitle, setInputTitle] = useState('');
+  const [inputBody, setInputBody] = useState('');
+  const [inputTitleClicked, setInputTitleClicked] = useState(false);
+  const [inputBodyClicked, setInputBodyClicked] = useState(false);
+
+  const errorValidatorFormat = (boolVal: boolean, text: string, minTextlength: number) =>
+    boolVal && (!text || !text.trim() || text.length < minTextlength);
+
+  const validateInput = (
+    text: string,
+    clicked: boolean,
+    minTextVal: number
+  ) => {
+    if (clicked) {
+      if (!text || !text.trim()) return 'No value inputed!';
+      if (text.length < minTextVal)
+        return `Input must contain at least ${minTextVal} letters!`;
+    }
+  };
 
   return (
     <FormWrapper>
@@ -25,56 +35,63 @@ export const Form = (props: FormProps) => {
           <Typography gutterBottom variant="h5" pb={2}>
             {formType === 'create' ? 'Create Post' : 'Update Post'}
           </Typography>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              console.log('Hello');
-            }}
-          >
-            <Stack spacing={4}>
-              <TextField
-                placeholder="Enter title"
-                label="Title"
-                variant="outlined"
-                required
-              />
-              <TextField
-                placeholder="Enter Description"
-                label="Description"
-                variant="outlined"
-                required
-              />
-              <Stack direction={'row'} className="updateBtnBody">
-                {formType === 'create' ? (
+          <Stack spacing={4}>
+            <TextField
+              placeholder="Enter title"
+              label="Title"
+              variant="outlined"
+              required
+              value={inputTitle}
+              error={errorValidatorFormat(inputTitleClicked, inputTitle, 3)}
+              helperText={validateInput(inputTitle, inputTitleClicked, 3)}
+              onChange={(evt) => setInputTitle(evt.target.value)}
+              onInput={() => setInputTitleClicked(true)}
+            />
+            <TextField
+              placeholder="Enter Description"
+              label="Description"
+              variant="outlined"
+              required
+              value={inputBody}
+              error={errorValidatorFormat(inputBodyClicked, inputBody, 5)}
+              helperText={validateInput(inputBody, inputBodyClicked, 5)}
+              onChange={(evt) => setInputBody(evt.target.value)}
+              onInput={() => setInputBodyClicked(true)}
+            />
+            <Stack direction={'row'} className="updateBtnBody">
+              {formType === 'create' ? (
+                <LoadingButton
+                  variant="contained"
+                  color="primary"
+                  className="createBtn"
+                  aria-label="Save"
+                  onClick={onClickFunc}
+                >
+                  Save
+                </LoadingButton>
+              ) : (
+                <>
                   <LoadingButton
-                    type="submit"
                     variant="contained"
-                    color="primary"
-                    className="createBtn"
+                    aria-label="Upgrade"
+                    size="large"
+                    onClick={onClickFunc}
                   >
-                    Save
+                    <UpgradeIcon />
                   </LoadingButton>
-                ) : (
-                  <>
-                    <LoadingButton
-                      variant="contained"
-                      aria-label="Upgrade"
-                      size="large"
-                    >
-                      <UpgradeIcon />
-                    </LoadingButton>
-                    <LoadingButton
-                      variant="contained"
-                      aria-label="delete"
-                      size="large"
-                    >
-                      <DeleteForeverIcon />
-                    </LoadingButton>
-                  </>
-                )}
-              </Stack>
+                  <LoadingButton
+                    variant="contained"
+                    aria-label="delete"
+                    size="large"
+                    className="deleteBtn"
+                    onClick={onClickFunc}
+                  >
+                    <DeleteForeverIcon />
+                  </LoadingButton>
+                </>
+              )}
             </Stack>
-          </form>
+          </Stack>
         </CardContent>
       </Card>
     </FormWrapper>

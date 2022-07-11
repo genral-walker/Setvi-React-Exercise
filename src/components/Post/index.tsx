@@ -7,7 +7,11 @@ export const Post = (props: PostProps) => {
   return (
     <Card
       elevation={2}
-      sx={{ cursor: 'pointer', height: { xs: 'max-content', sm: '100%' } }}
+      sx={{
+        cursor: 'pointer',
+        height: { xs: 'max-content', sm: '100%' },
+        textTransform: 'capitalize',
+      }}
       onClick={clickFunc}
     >
       <CardContent>

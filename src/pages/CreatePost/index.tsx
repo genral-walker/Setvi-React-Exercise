@@ -1,10 +1,25 @@
-import {
-  Box,
-} from '@mui/material';
+import { Box } from '@mui/material';
 import { Form } from 'components';
+import { useState } from 'react';
 
 export const CreatePost = () => {
+  const [title, setTitle] = useState<string | null>();
+  const [body, setBody] = useState<string | null>();
+
+  const createNewpost = (
+    evt: React.FormEvent<HTMLFormElement>,
+    title: string,
+    body: string
+  ) => {
+    evt.preventDefault();
+    setTitle(title);
+    setBody(body);
+  };
+
+  
   return (
+    
+    <>
     <Box
       my={4}
       px={4}
@@ -13,28 +28,9 @@ export const CreatePost = () => {
       maxWidth={500}
       sx={{ marginInline: 'auto' }}
     >
-      <Form formType="create" />
+      <Form formType="create" submitFunc={createNewpost} />
     </Box>
+    {console.log(title, body)}
+    </>
   );
 };
-
-/*
- <FormGroup >
-        <FormControl>
-          <FormControlLabel
-            control={
-              <TextField
-                label="Form Input"
-                required
-                helperText={'Do not share your password with anyone'}
-                type="password"
-                error={false}
-                value={'Walker'}
-                // onChange={handleChange}
-              />
-            }
-            label="Tiltle"
-          />
-        </FormControl>
-      </FormGroup>
-*/

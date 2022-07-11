@@ -13,7 +13,7 @@ export const FormWrapper = styled(Box)(() => ({
       marginRight: '10px',
       marginLeft: 'auto',
     },
-    '& button:last-of-type': {
+    '& button:last-of-type.deleteBtn' : {
       '&:hover': {
         color: red[300]
       }
