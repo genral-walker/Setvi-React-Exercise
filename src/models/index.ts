@@ -6,14 +6,16 @@ export interface PostProps {
 
 export interface FormProps {
   formType: 'update' | 'create';
-  onClickFunc: () => void;
-  title?: string;
-  body?: string;
+  onClickFunc: (titleText: string, titleBody: string) => void;
+  loadingState: boolean
 }
 
-export interface PostType {
-  userId: number;
-  id: number;
+export interface PostAPIData {
   title: string;
   body: string;
+  userId: number;
+}
+
+export interface PostType extends PostAPIData {
+  id: number;
 }

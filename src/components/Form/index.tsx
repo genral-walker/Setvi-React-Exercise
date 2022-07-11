@@ -6,11 +6,14 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { FormProps } from 'models';
 import { LoadingButton } from '@mui/lab';
 
-export const Form = ({ formType, onClickFunc }: FormProps) => {
+export const Form = ({ formType, onClickFunc, loadingState }: FormProps) => {
   const [inputTitle, setInputTitle] = useState('');
   const [inputBody, setInputBody] = useState('');
   const [inputTitleClicked, setInputTitleClicked] = useState(false);
   const [inputBodyClicked, setInputBodyClicked] = useState(false);
+  const [typeOfButtonClicked, setTypeOfButtonClicked] = useState<'delete'| 'update'>();
+
+  const callOnClickFunc = () => { return onClickFunc(inputTitle, inputBody)};
 
   const errorValidatorFormat = (
     isClicked: boolean,
@@ -74,11 +77,12 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                   color="primary"
                   className="createBtn"
                   aria-label="Save"
-                  onClick={onClickFunc}
+                  onClick={callOnClickFunc}
+                  loading={loadingState}
                   disabled={
                     !buttonValidatorFormat(inputTitle, 3) ||
-                    !buttonValidatorFormat(inputBody, 5)
-                  } // loading
+                    !buttonValidatorFormat(inputBody, 5) || loadingState
+                  }
                 >
                   Save
                 </LoadingButton>
@@ -86,12 +90,13 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                 <>
                   <LoadingButton
                     variant="contained"
-                    aria-label="Upgrade"
+                    aria-label="Update"
                     size="large"
-                    onClick={onClickFunc}
+                    onClick={()=> {callOnClickFunc(); setTypeOfButtonClicked('update')}}
+                    loading={loadingState && typeOfButtonClicked === 'update'}
                     disabled={
                       !buttonValidatorFormat(inputTitle, 3) ||
-                      !buttonValidatorFormat(inputBody, 5)
+                      !buttonValidatorFormat(inputBody, 5) || loadingState
                     } // loading
                   >
                     <UpgradeIcon />
@@ -101,10 +106,11 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                     aria-label="delete"
                     size="large"
                     className="deleteBtn"
-                    onClick={onClickFunc}
+                    onClick={()=> {callOnClickFunc(); setTypeOfButtonClicked('delete')}}
+                    loading={loadingState && typeOfButtonClicked === 'delete'}
                     disabled={
                       !buttonValidatorFormat(inputTitle, 3) ||
-                      !buttonValidatorFormat(inputBody, 5)
+                      !buttonValidatorFormat(inputBody, 5) || loadingState
                     } // loading
                   >
                     <DeleteForeverIcon />

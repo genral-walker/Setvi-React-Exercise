@@ -1,28 +1,44 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { PostType } from 'models';
+import { PostAPIData, PostType } from 'models';
 
 export const PostsApi = createApi({
   reducerPath: 'posts',
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   endpoints: (builder) => ({
     getAllPosts: builder.query<PostType[], void>({
-      query: () => ({ url: `/posts` }),
+      query: () => ({ url: '/posts' }),
     }),
-    // registerPatient: builder.mutation<RegisterPatientReturn, RegisterPatient>({
-    //   query: (data) => ({
-    //     url: '/users',
-    //     data: { ...data },
-    //     method: 'POST',
-    //   }),
-    // }),
-    // verifyPatient: builder.mutation<{ message: string }, string>({
-    //   query: (email) => ({
-    //     url: '/users/verify',
-    //     data: { email },
-    //     method: 'POST',
-    //   }),
-    // })
+    getSinglePost: builder.query<PostType[], string>({
+      query: (id) => ({ url: `/posts${id}` }),
+    }),
+    createPost: builder.mutation<{ id: string }, PostAPIData>({
+      query: (data) => ({
+        url: '/posts',
+        data: { ...data },
+        method: 'POST',
+      }),
+    }),
+    updatePost: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `/posts${data.id}`,
+        data: { ...data },
+        method: 'PUT',
+      }),
+    }),
+    deletePost: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `/posts${data.id}`,
+        data: { ...data },
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetAllPostsQuery } = PostsApi;
+export const {
+  useGetAllPostsQuery,
+  useGetSinglePostQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+} = PostsApi;
