@@ -1,11 +1,18 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Pagination, Stack, Typography } from '@mui/material';
 import { Post, PostSkeleton } from 'components';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGetAllPostsQuery } from 'redux/queries/posts';
+import { createGroupsFromArr } from 'utils';
 import { HomeWrapper } from './styles';
 
 export const Home = () => {
   const { isLoading, data, error } = useGetAllPostsQuery();
+
+  // const paginatedData = useMemo(
+  //   () => data?.length && createGroupsFromArr<object>(data, 9),
+  //   [data]
+  // );
+  const [page, setPage] = useState(1);
 
   // If error, alert(an error occured, plese, retrying..)
 
@@ -22,6 +29,11 @@ export const Home = () => {
 
     return skeletons;
   };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    newPage: number
+  ) => setPage(newPage);
 
   if (error)
     return (
@@ -47,6 +59,16 @@ export const Home = () => {
               </Grid>
             ))}
       </Grid>
+      {/* {data?.length && (
+        <Stack pl={2} pr={1} sx={{ alignItems: { xs: 'left', sm: 'center' } }}>
+          <Pagination
+            count={data.length}
+            page={page}
+            shape="rounded"
+            onChange={handlePageChange}
+          />
+        </Stack>
+      )} */}
     </HomeWrapper>
   );
 };
