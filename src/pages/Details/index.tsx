@@ -12,7 +12,7 @@ export const Details = () => {
       maxWidth={500}
       sx={{ marginInline: 'auto' }}
     >
-      <Form formType="update" submitFunc={() => {}}  />
+      <Form formType="update" onClickFunc={() => {}}  />
     </Box>
   );
 };

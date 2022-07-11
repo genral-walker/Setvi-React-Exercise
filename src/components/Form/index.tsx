@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, TextField, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormWrapper } from './styles';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -7,14 +7,23 @@ import { FormProps } from 'models';
 import { LoadingButton } from '@mui/lab';
 
 export const Form = ({ formType, onClickFunc }: FormProps) => {
-
   const [inputTitle, setInputTitle] = useState('');
   const [inputBody, setInputBody] = useState('');
   const [inputTitleClicked, setInputTitleClicked] = useState(false);
   const [inputBodyClicked, setInputBodyClicked] = useState(false);
 
-  const errorValidatorFormat = (boolVal: boolean, text: string, minTextlength: number) =>
-    boolVal && (!text || !text.trim() || text.length < minTextlength);
+  const errorValidatorFormat = (
+    isClicked: boolean,
+    text: string,
+    minTextlength: number
+  ): boolean =>
+    isClicked && (!text || !text.trim() || text.length < minTextlength);
+
+  const buttonValidatorFormat = (
+    text: string,
+    minTextlength: number
+  ): boolean =>
+    text && text.trim() && text.length >= minTextlength ? true : false;
 
   const validateInput = (
     text: string,
@@ -66,6 +75,10 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                   className="createBtn"
                   aria-label="Save"
                   onClick={onClickFunc}
+                  disabled={
+                    !buttonValidatorFormat(inputTitle, 3) ||
+                    !buttonValidatorFormat(inputBody, 5)
+                  } // loading
                 >
                   Save
                 </LoadingButton>
@@ -76,6 +89,10 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                     aria-label="Upgrade"
                     size="large"
                     onClick={onClickFunc}
+                    disabled={
+                      !buttonValidatorFormat(inputTitle, 3) ||
+                      !buttonValidatorFormat(inputBody, 5)
+                    } // loading
                   >
                     <UpgradeIcon />
                   </LoadingButton>
@@ -85,6 +102,10 @@ export const Form = ({ formType, onClickFunc }: FormProps) => {
                     size="large"
                     className="deleteBtn"
                     onClick={onClickFunc}
+                    disabled={
+                      !buttonValidatorFormat(inputTitle, 3) ||
+                      !buttonValidatorFormat(inputBody, 5)
+                    } // loading
                   >
                     <DeleteForeverIcon />
                   </LoadingButton>
