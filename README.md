@@ -1,3 +1,7 @@
+<!--
+Clean up all places where Styled() Isn't used and return the component to its default Imported form MUI
+  -->
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

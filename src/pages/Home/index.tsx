@@ -1,17 +1,66 @@
-import { AppBar, Button, Stack, Toolbar, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Post } from 'components';
 import { HomeWrapper } from './styles';
 
 export const Home = () => {
   return (
-    <HomeWrapper>
-      <AppBar>
-        <Toolbar>
-          <Typography variant="h4" component="h1">
-            Posts App
-          </Typography>
-          <Button variant='outlined'>Create Post</Button>
-        </Toolbar>
-      </AppBar>
+    <HomeWrapper pb={4}>
+      <Grid rowSpacing={4} columnSpacing={3} container my={4} px={3}>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <Post />
+        </Grid>
+      </Grid>
     </HomeWrapper>
   );
 };
