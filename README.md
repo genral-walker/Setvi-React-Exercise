@@ -1,4 +1,4 @@
 
 # Setvi React Excercise
 
- [View Hosted Project](https://github.com/facebook/create-react-app).
+ [View Hosted Project](https://setvi-react-exercise.vercel.app/).
