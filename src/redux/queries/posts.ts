@@ -1,15 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { PostAPIData, PostType } from 'models';
+import { PostAPIData, PostType, UpdatePayloadType } from 'models';
 
 export const PostsApi = createApi({
   reducerPath: 'posts',
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  tagTypes: ['updatePost'],
   endpoints: (builder) => ({
     getAllPosts: builder.query<PostType[], void>({
       query: () => ({ url: '/posts' }),
     }),
-    getSinglePost: builder.query<PostType[], string>({
-      query: (id) => ({ url: `/posts${id}` }),
+    getSinglePost: builder.query<PostType, string>({
+      query: (id) => ({ url: `/posts/${id}` }),
+      providesTags: ['updatePost'],
     }),
     createPost: builder.mutation<{ id: string }, PostAPIData>({
       query: (data) => ({
@@ -18,17 +20,17 @@ export const PostsApi = createApi({
         method: 'POST',
       }),
     }),
-    updatePost: builder.mutation<any, any>({
+    updatePost: builder.mutation<PostType, UpdatePayloadType>({
       query: (data) => ({
-        url: `/posts${data.id}`,
+        url: `/posts/${data.id}`,
         data: { ...data },
         method: 'PUT',
       }),
+      invalidatesTags: ['updatePost'],
     }),
-    deletePost: builder.mutation<any, any>({
-      query: (data) => ({
-        url: `/posts${data.id}`,
-        data: { ...data },
+    deletePost: builder.mutation<{}, string>({
+      query: (id) => ({
+        url: `/posts/${id}`,
         method: 'DELETE',
       }),
     }),

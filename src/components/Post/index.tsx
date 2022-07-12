@@ -15,10 +15,10 @@ export const Post = (props: PostProps) => {
       onClick={clickFunc}
     >
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" mb={2}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" lineHeight={1.7}>
           {body}
         </Typography>
       </CardContent>

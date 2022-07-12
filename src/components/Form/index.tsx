@@ -1,19 +1,39 @@
-import { Card, CardContent, Typography, TextField, Stack } from '@mui/material';
-import { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Stack,
+  Tooltip,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 import { FormWrapper } from './styles';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { FormProps } from 'models';
 import { LoadingButton } from '@mui/lab';
 
-export const Form = ({ formType, onClickFunc, loadingState }: FormProps) => {
+export const Form = ({
+  formType,
+  onClickFunc,
+  loadingState,
+  clearFields,
+  titleText,
+  bodyText,
+  updateFunc,
+  deleteFunc
+}: FormProps) => {
   const [inputTitle, setInputTitle] = useState('');
   const [inputBody, setInputBody] = useState('');
+  const [buttonTypeClicked, setButtonTypeClicked] = useState<
+    'update' | 'delete' | ''
+  >('');
   const [inputTitleClicked, setInputTitleClicked] = useState(false);
   const [inputBodyClicked, setInputBodyClicked] = useState(false);
-  const [typeOfButtonClicked, setTypeOfButtonClicked] = useState<'delete'| 'update'>();
 
-  const callOnClickFunc = () => { return onClickFunc(inputTitle, inputBody)};
+  const callOnClickFunc = () => {
+    if (onClickFunc) return onClickFunc(inputTitle, inputBody);
+  };
 
   const errorValidatorFormat = (
     isClicked: boolean,
@@ -40,6 +60,22 @@ export const Form = ({ formType, onClickFunc, loadingState }: FormProps) => {
     }
   };
 
+  useEffect(() => {
+    if (titleText && bodyText) {
+      setInputTitle(titleText);
+      setInputBody(bodyText);
+    }
+  }, [titleText, bodyText]);
+
+  useEffect(() => {
+    if (clearFields) {
+      setInputTitle('');
+      setInputBody('');
+      setInputTitleClicked(false);
+      setInputBodyClicked(false);
+    }
+  }, [clearFields]);
+
   return (
     <FormWrapper>
       <Card className="card">
@@ -64,6 +100,8 @@ export const Form = ({ formType, onClickFunc, loadingState }: FormProps) => {
               label="Description"
               variant="outlined"
               required
+              multiline
+              rows={4}
               value={inputBody}
               error={errorValidatorFormat(inputBodyClicked, inputBody, 5)}
               helperText={validateInput(inputBody, inputBodyClicked, 5)}
@@ -81,40 +119,61 @@ export const Form = ({ formType, onClickFunc, loadingState }: FormProps) => {
                   loading={loadingState}
                   disabled={
                     !buttonValidatorFormat(inputTitle, 3) ||
-                    !buttonValidatorFormat(inputBody, 5) || loadingState
+                    !buttonValidatorFormat(inputBody, 5) ||
+                    loadingState
                   }
                 >
                   Save
                 </LoadingButton>
               ) : (
                 <>
-                  <LoadingButton
-                    variant="contained"
-                    aria-label="Update"
-                    size="large"
-                    onClick={()=> {callOnClickFunc(); setTypeOfButtonClicked('update')}}
-                    loading={loadingState && typeOfButtonClicked === 'update'}
-                    disabled={
-                      !buttonValidatorFormat(inputTitle, 3) ||
-                      !buttonValidatorFormat(inputBody, 5) || loadingState
-                    } // loading
-                  >
-                    <UpgradeIcon />
-                  </LoadingButton>
-                  <LoadingButton
-                    variant="contained"
-                    aria-label="delete"
-                    size="large"
-                    className="deleteBtn"
-                    onClick={()=> {callOnClickFunc(); setTypeOfButtonClicked('delete')}}
-                    loading={loadingState && typeOfButtonClicked === 'delete'}
-                    disabled={
-                      !buttonValidatorFormat(inputTitle, 3) ||
-                      !buttonValidatorFormat(inputBody, 5) || loadingState
-                    } // loading
-                  >
-                    <DeleteForeverIcon />
-                  </LoadingButton>
+                  <Tooltip arrow title="Update" placement="bottom">
+                    <span>
+                      <LoadingButton
+                        variant="contained"
+                        aria-label="Update"
+                        size="large"
+                        onClick={() => {
+                          setButtonTypeClicked('update');
+                          updateFunc && updateFunc(inputTitle, inputBody);
+                        }}
+                        loading={
+                          loadingState && buttonTypeClicked! === 'update'
+                        }
+                        disabled={
+                          !buttonValidatorFormat(inputTitle, 3) ||
+                          !buttonValidatorFormat(inputBody, 5) ||
+                          loadingState
+                        }
+                      >
+                        <UpgradeIcon />
+                      </LoadingButton>
+                    </span>
+                  </Tooltip>
+
+                  <Tooltip arrow title="Delete" placement="bottom">
+                    <span>
+                      {' '}
+                      <LoadingButton
+                        variant="contained"
+                        aria-label="delete"
+                        size="large"
+                        className="deleteBtn"
+                        onClick={() => {
+                          setButtonTypeClicked('delete');
+                          deleteFunc && deleteFunc();
+                        }}
+                        loading={loadingState && buttonTypeClicked === 'delete'}
+                        disabled={
+                          !buttonValidatorFormat(inputTitle, 3) ||
+                          !buttonValidatorFormat(inputBody, 5) ||
+                          loadingState
+                        }
+                      >
+                        <DeleteForeverIcon />
+                      </LoadingButton>
+                    </span>
+                  </Tooltip>
                 </>
               )}
             </Stack>

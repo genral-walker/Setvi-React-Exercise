@@ -2,6 +2,8 @@
 Clean up all places where Styled() Isn't used and return the component to its default Imported form MUI
 clear all comments
 clean all unused imports
+See if you can use memo. for anywhere
+create utils for places where code's too much
   -->
 
 # Getting Started with Create React App

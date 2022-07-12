@@ -6,8 +6,13 @@ export interface PostProps {
 
 export interface FormProps {
   formType: 'update' | 'create';
-  onClickFunc: (titleText: string, titleBody: string) => void;
-  loadingState: boolean
+  loadingState: boolean;
+  onClickFunc?: (titleText: string, titleBody: string) => void;
+  updateFunc?: (str: string, str2: string) => void;
+  deleteFunc?: () => void;
+  clearFields?: boolean;
+  titleText?: string;
+  bodyText?: string;
 }
 
 export interface PostAPIData {
@@ -18,4 +23,17 @@ export interface PostAPIData {
 
 export interface PostType extends PostAPIData {
   id: number;
+}
+
+export interface CustomSnackbarType {
+  message: string;
+  type: 'Success' | 'Error' | '';
+  isOpen: boolean;
+  handleClose: () => void;
+}
+
+export interface UpdatePayloadType {
+  id: number;
+  title?: string;
+  body?: string;
 }

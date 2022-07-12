@@ -1,20 +1,20 @@
-import { Grid, Pagination, Stack, Typography } from '@mui/material';
+import { Box, Grid, Pagination, Stack, Typography } from '@mui/material';
 import { Post, PostSkeleton } from 'components';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGetAllPostsQuery } from 'redux/queries/posts';
 import { createGroupsFromArr } from 'utils';
-import { HomeWrapper } from './styles';
 
 export const Home = () => {
   const { isLoading, data, error } = useGetAllPostsQuery();
+  const navigate = useNavigate();
 
   // const paginatedData = useMemo(
   //   () => data?.length && createGroupsFromArr<object>(data, 9),
   //   [data]
   // );
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
 
-  // If error, alert(an error occured, plese, retrying..)
 
   const renderSkeletons = (num: number): JSX.Element[] => {
     const skeletons: JSX.Element[] = [];
@@ -30,10 +30,10 @@ export const Home = () => {
     return skeletons;
   };
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    newPage: number
-  ) => setPage(newPage);
+  // const handlePageChange = (
+  //   event: React.ChangeEvent<unknown>,
+  //   newPage: number
+  // ) => setPage(newPage);
 
   if (error)
     return (
@@ -43,7 +43,7 @@ export const Home = () => {
     );
 
   return (
-    <HomeWrapper pb={4}>
+    <Box pb={4}>
       <Grid spacing={5} container my={4} px={4}>
         {isLoading
           ? renderSkeletons(6)
@@ -53,7 +53,7 @@ export const Home = () => {
                   title={title}
                   body={body}
                   clickFunc={() => {
-                    console.log(data);
+                    navigate(`details/${id}`);
                   }}
                 />
               </Grid>
@@ -69,6 +69,6 @@ export const Home = () => {
           />
         </Stack>
       )} */}
-    </HomeWrapper>
+    </Box>
   );
 };
